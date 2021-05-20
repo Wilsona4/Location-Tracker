@@ -19,7 +19,7 @@ class LocationViewModel : ViewModel() {
     private val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     /*Variable to store upload Status (success/failure)*/
-    private val _uploadStatus = MutableLiveData<Exception?>()
+    private var _uploadStatus = MutableLiveData<Exception?>()
     val uploadStatus: LiveData<Exception?> get() = _uploadStatus
 
     /*Variable to Listen for Location Change*/

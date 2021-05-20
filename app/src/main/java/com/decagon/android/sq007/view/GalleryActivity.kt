@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentResolverCompat.query
 import androidx.core.content.ContextCompat
+import com.decagon.android.sq007.R
 import com.decagon.android.sq007.api.RetrofitInstance
 import com.decagon.android.sq007.databinding.ActivityGalleryBinding
 import com.decagon.android.sq007.model.PhotoFormat
@@ -48,6 +49,7 @@ class GalleryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         binding = ActivityGalleryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -61,7 +63,16 @@ class GalleryActivity : AppCompatActivity() {
 
         // upload image
         binding.btnUpload.setOnClickListener {
-            uploadImage(imageUri)
+            if (binding.ivRetrievedImage.drawable != null) {
+                uploadImage(imageUri)
+            } else {
+                Toast.makeText(this@GalleryActivity,
+                    "Select an Image",
+                    Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
         }
         // download image
         binding.btnDownload.setOnClickListener {
@@ -193,10 +204,11 @@ class GalleryActivity : AppCompatActivity() {
                         // get the download link
                         downloadLink = response.body()?.payload?.downloadUri ?: String()
                         // clear the image holder
-                        binding.ivRetrievedImage.setImageResource(0)
+                        binding.ivRetrievedImage.setImageResource(R.drawable.success)
                     } else {
+                        binding.ivRetrievedImage.setImageResource(R.drawable.error)
                         Toast.makeText(this@GalleryActivity,
-                            "Uplaod not Successful",
+                            "Upload not Successful",
                             Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "output is $response")
                     }
@@ -239,6 +251,10 @@ class GalleryActivity : AppCompatActivity() {
             // return result to main thread
             launch(context = Main) {
                 binding.ivRetrievedImage.setImageBitmap(bitmap)
+                Toast.makeText(this@GalleryActivity,
+                    "Download Successful",
+                    Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -246,6 +262,5 @@ class GalleryActivity : AppCompatActivity() {
     companion object {
         private val TAG = GalleryActivity::class.java.simpleName
         private const val GALLERY_REQUEST_CODE = 15
-
     }
 }

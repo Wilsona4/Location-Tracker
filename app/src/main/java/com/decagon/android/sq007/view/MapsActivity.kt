@@ -27,7 +27,7 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
@@ -128,11 +128,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                             if (retrievedLatitude != null && retrievedLongitude != null) {
                                 val position = LatLng(retrievedLatitude, retrievedLongitude)
 
-                                mMap.addMarker(
-                                    MarkerOptions()
-                                        .position(position)
-                                        .title(retrievedId)
-                                )
+                                when (retrievedId) {
+                                    "Wilson Ahanmisi" -> mMap.addMarker(
+                                        MarkerOptions()
+                                            .position(position)
+                                            .title(retrievedId)
+                                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                                BitmapDescriptorFactory.HUE_BLUE))
+                                    )
+                                    else -> mMap.addMarker(
+                                        MarkerOptions()
+                                            .position(position)
+                                            .title(retrievedId)
+                                    )
+                                }
+
 
                             } else {
                                 Log.d(TAG, "Current location is null. Using defaults.")
@@ -181,19 +191,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                         viewModel.uploadStatus.observe(
                             this@MapsActivity,
                             {
-                                if (it == null) {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "Location Update Successfully",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } else {
+                                if (it != null) {
                                     Toast.makeText(
                                         applicationContext,
                                         "${it.message}",
                                         Toast.LENGTH_SHORT
                                     ).show()
+
                                 }
+//                                else {
+//                                    Toast.makeText(applicationContext, "Location Update Successfully", Toast.LENGTH_SHORT).show()
+//                                }
                             }
                         )
                     }
@@ -264,7 +272,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         locationPermissionGranted = false
         when (requestCode) {
@@ -303,13 +311,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         finish()
     }
 
+    override fun onResume() {
+        super.onResume()
+        createLocationRequest()
+        getDeviceLocation()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
 
     companion object {
         private val TAG = MapsActivity::class.java.simpleName
         private const val DEFAULT_ZOOM = 15
 
         const val MR_WIL = "wilsonahanmisi@gmail.com"
-        const val HOPE = "Pope Hope"
     }
 
 }
