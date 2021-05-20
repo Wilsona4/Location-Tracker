@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1060034457482",
+    "project_id": "crucial-inn-313818",
+    "storage_bucket": "crucial-inn-313818.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060034457482:android:357568fb2fbaa72c216273",
+        "android_client_info": {
+          "package_name": "com.decagon.android.sq007"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1060034457482-jfbj85saal2d4ffas04v4n6b0kd8b6jl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIllK72IThL8EcnB96jVvIWccs3IgQ_G8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1060034457482-jfbj85saal2d4ffas04v4n6b0kd8b6jl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
